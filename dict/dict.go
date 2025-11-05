@@ -12,3 +12,12 @@ func Keys[K comparable, V any](items map[K]V) []K {
 func Values[K comparable, V any](items map[K]V) []V {
 	return slices.Collect(maps.Values(items))
 }
+
+func HasKey[K comparable, V any](items map[K]V, key K) bool {
+	_, ok := items[key]
+	return ok
+}
+
+func NoKey[K comparable, V any](items map[K]V, key K) bool {
+	return !HasKey(items, key)
+}

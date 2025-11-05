@@ -8,3 +8,39 @@ func All[T any](items []T, ok func(T) bool) bool {
 	}
 	return true
 }
+
+func Any[T any](items []T, ok func(T) bool) bool {
+	for _, item := range items {
+		if ok(item) {
+			return true
+		}
+	}
+	return false
+}
+
+func AllIndex[T any](items []T, ok func(int, T) bool) bool {
+	for i, item := range items {
+		if !ok(i, item) {
+			return false
+		}
+	}
+	return true
+}
+
+func AllEqual[T comparable](items []T, value T) bool {
+	for _, item := range items {
+		if item != value {
+			return false
+		}
+	}
+	return true
+}
+
+func AnyEqual[T comparable](items []T, value T) bool {
+	for _, item := range items {
+		if item == value {
+			return true
+		}
+	}
+	return false
+}
