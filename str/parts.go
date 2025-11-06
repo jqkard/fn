@@ -1,0 +1,36 @@
+package str
+
+import (
+	"strings"
+
+	"github.com/jqkard/fn"
+)
+
+func CleanSplit(text string, sep string) []string {
+	parts := strings.Split(text, sep)
+	parts = fn.Map(parts, strings.TrimSpace)
+	return parts
+}
+
+func SpaceSplit(text string) []string {
+	return strings.Fields(strings.TrimSpace(text))
+}
+
+func Lines(text string) []string {
+	return CleanSplit(text, "\n")
+}
+
+func WrapBraces[T any](items []T) string {
+	items2 := fn.Map(items, Any)
+	return "{ " + strings.Join(items2, ", ") + " }"
+}
+
+func WrapBrackets[T any](items []T) string {
+	items2 := fn.Map(items, Any)
+	return "[ " + strings.Join(items2, ", ") + " ]"
+}
+
+func WrapParens[T any](items []T) string {
+	items2 := fn.Map(items, Any)
+	return "( " + strings.Join(items2, ", ") + " )"
+}
