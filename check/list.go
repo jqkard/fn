@@ -1,5 +1,7 @@
 package check
 
+import "github.com/jqkard/fn/ds"
+
 func All[T any](items []T, ok func(T) bool) bool {
 	for _, item := range items {
 		if !ok(item) {
@@ -43,4 +45,12 @@ func AnyEqual[T comparable](items []T, value T) bool {
 		}
 	}
 	return false
+}
+
+func AllUnique[T comparable](items []T) bool {
+	return len(items) == ds.SetFrom(items).Len()
+}
+
+func AllSame[T comparable](items []T) bool {
+	return ds.SetFrom(items).Len() == 1
 }
