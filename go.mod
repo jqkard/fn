@@ -1,3 +1,5 @@
 module github.com/jqkard/fn
 
 go 1.25.3
+
+require golang.org/x/text v0.30.0 
