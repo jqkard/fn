@@ -35,3 +35,15 @@ func TallyValues[K, V comparable](items map[K]V, values []V) map[V]int {
 	}
 	return tally
 }
+
+func Zip[K comparable, V any](keys []K, values []V) map[K]V {
+	m := make(map[K]V, len(keys))
+	numValues := len(values)
+	for i, k := range keys {
+		if i >= numValues {
+			break
+		}
+		m[k] = values[i]
+	}
+	return m
+}
