@@ -29,3 +29,11 @@ func Product[T fn.Number](items []T) T {
 func Length[T any](items []T) int {
 	return len(items)
 }
+
+func IsEmpty[T any](items []T) bool {
+	return len(items) == 0
+}
+
+func NotEmpty[T any](items []T) bool {
+	return len(items) > 0
+}
