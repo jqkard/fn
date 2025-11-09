@@ -1,6 +1,7 @@
 package io
 
 import (
+	"encoding/json"
 	"os"
 
 	"github.com/jqkard/fn/str"
@@ -21,4 +22,17 @@ func ReadLines(path string) ([]string, error) {
 	}
 	lines := str.Lines(text)
 	return lines, nil
+}
+
+func ReadJSON[T any](path string) (T, error) {
+	var item T
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		return item, err
+	}
+	err = json.Unmarshal(bytes, &item)
+	if err != nil {
+		return item, err
+	}
+	return item, nil
 }
