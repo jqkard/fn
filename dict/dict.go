@@ -47,3 +47,19 @@ func Zip[K comparable, V any](keys []K, values []V) map[K]V {
 	}
 	return m
 }
+
+func Counter[T comparable](items []T) map[T]int {
+	count := make(map[T]int)
+	for _, item := range items {
+		count[item] = 0
+	}
+	return count
+}
+
+func Flags[T comparable](items []T, flag bool) map[T]bool {
+	flags := make(map[T]bool)
+	for _, item := range items {
+		flags[item] = flag
+	}
+	return flags
+}
