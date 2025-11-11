@@ -1,6 +1,11 @@
 package ds
 
-import "github.com/jqkard/fn/dict"
+import (
+	"strings"
+
+	"github.com/jqkard/fn/dict"
+	"github.com/jqkard/fn/str"
+)
 
 type Set[T comparable] struct {
 	items map[T]bool
@@ -44,4 +49,26 @@ func (s Set[T]) IsEmpty() bool {
 
 func (s Set[T]) Items() []T {
 	return dict.Keys(s.items)
+}
+
+type Subsets struct {
+	Universal []string
+	Names     []string
+	Subsets   [][]string
+}
+
+func NewSubsets(universal string, subsetLines []string) *Subsets {
+	numSubsets := len(subsetLines)
+	names := make([]string, numSubsets)
+	subsets := make([][]string, numSubsets)
+	for i, line := range subsetLines {
+		parts := str.CleanSplit(line, ":")
+		names[i] = parts[0]
+		subsets[i] = strings.Fields(parts[1])
+	}
+	return &Subsets{
+		Universal: strings.Fields(universal),
+		Names:     names,
+		Subsets:   subsets,
+	}
 }
