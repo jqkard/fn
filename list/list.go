@@ -1,6 +1,10 @@
 package list
 
-import "github.com/jqkard/fn"
+import (
+	"math/rand"
+
+	"github.com/jqkard/fn"
+)
 
 func IntRange(start, end int) []int {
 	numbers := make([]int, end-start)
@@ -36,4 +40,10 @@ func IsEmpty[T any](items []T) bool {
 
 func NotEmpty[T any](items []T) bool {
 	return len(items) > 0
+}
+
+func Shuffle[T any](items []T) {
+	rand.Shuffle(len(items), func(i, j int) {
+		items[i], items[j] = items[j], items[i]
+	})
 }
