@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/jqkard/fn/dict"
-	"github.com/jqkard/fn/str"
 )
 
 type Set[T comparable] struct {
@@ -62,9 +61,9 @@ func NewSubsets(universal string, subsetLines []string) *Subsets {
 	names := make([]string, numSubsets)
 	subsets := make([][]string, numSubsets)
 	for i, line := range subsetLines {
-		parts := str.CleanSplit(line, ":")
-		names[i] = parts[0]
-		subsets[i] = strings.Fields(parts[1])
+		parts := strings.Split(line, ":")
+		names[i] = strings.TrimSpace(parts[0])
+		subsets[i] = strings.Fields(strings.TrimSpace(parts[1]))
 	}
 	return &Subsets{
 		Universal: strings.Fields(universal),

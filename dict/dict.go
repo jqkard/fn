@@ -22,6 +22,19 @@ func NoKey[K comparable, V any](items map[K]V, key K) bool {
 	return !HasKey(items, key)
 }
 
+func SetDefault[K comparable, V any](items map[K]V, key K, value V) {
+	if _, ok := items[key]; !ok {
+		items[key] = value
+	}
+}
+
+func GetOr[K comparable, V any](items map[K]V, key K, defaultValue V) V {
+	if value, ok := items[key]; ok {
+		return value
+	}
+	return defaultValue
+}
+
 func TallyValues[K, V comparable](items map[K]V, values []V) map[V]int {
 	tally := make(map[V]int, len(values))
 	for _, value := range values {
