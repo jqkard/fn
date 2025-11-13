@@ -19,6 +19,7 @@ const edgeGlue string = "-"
 type Graph struct {
 	Vertices    []Vertex
 	Edges       []Edge
+	IndexOf     map[Vertex]int
 	EdgesOf     map[Vertex][]Edge
 	NeighborsOf map[Vertex]VertexSet
 }
@@ -39,6 +40,10 @@ func (e Edge) Tuple() (Vertex, Vertex) {
 func NewGraph(vertices string, edgePairs string) *Graph {
 	g := &Graph{}
 	g.Vertices = strings.Fields(vertices)
+	g.IndexOf = make(map[Vertex]int)
+	for i, vertex := range g.Vertices {
+		g.IndexOf[vertex] = i
+	}
 	g.Edges = make([]Edge, 0)
 	g.EdgesOf = make(map[Vertex][]Edge)
 	g.NeighborsOf = make(map[Vertex]VertexSet)
