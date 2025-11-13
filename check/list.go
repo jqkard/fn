@@ -54,3 +54,19 @@ func AllUnique[T comparable](items []T) bool {
 func AllSame[T comparable](items []T) bool {
 	return ds.SetFrom(items).Len() == 1
 }
+
+func AllTrue(items []bool) bool {
+	return AllEqual(items, true)
+}
+
+func AllFalse(items []bool) bool {
+	return AllEqual(items, false)
+}
+
+func AnyTrue(items []bool) bool {
+	return AnyEqual(items, true)
+}
+
+func AnyFalse(items []bool) bool {
+	return AnyEqual(items, false)
+}
