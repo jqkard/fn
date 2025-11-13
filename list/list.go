@@ -47,3 +47,16 @@ func Shuffle[T any](items []T) {
 		items[i], items[j] = items[j], items[i]
 	})
 }
+
+func Divide(numItems, numParts int) [][2]int {
+	portion := numItems / numParts
+	ranges := make([][2]int, numParts)
+	for i := 0; i < numParts-1; i++ {
+		start := i * portion
+		ranges[i] = [2]int{start, start + portion}
+	}
+	i := numParts - 1
+	start := i * portion
+	ranges[i] = [2]int{start, numItems}
+	return ranges
+}
