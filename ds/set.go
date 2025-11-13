@@ -50,6 +50,37 @@ func (s Set[T]) Items() []T {
 	return dict.Keys(s.items)
 }
 
+func (s1 Set[T]) Union(s2 *Set[T]) *Set[T] {
+	s3 := NewSet[T]()
+	for x := range s1.items {
+		s3.Add(x)
+	}
+	for x := range s2.items {
+		s3.Add(x)
+	}
+	return s3
+}
+
+func (s1 Set[T]) Intersection(s2 *Set[T]) *Set[T] {
+	s3 := NewSet[T]()
+	for x := range s1.items {
+		if s2.Contains(x) {
+			s3.Add(x)
+		}
+	}
+	return s3
+}
+
+func (s1 Set[T]) Difference(s2 *Set[T]) *Set[T] {
+	s3 := NewSet[T]()
+	for x := range s1.items {
+		if !s2.Contains(x) {
+			s3.Add(x)
+		}
+	}
+	return s3
+}
+
 type Subsets struct {
 	Universal []string
 	Names     []string

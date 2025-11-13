@@ -68,3 +68,60 @@ func (g Graph) Neighbors(vertex Vertex) []Vertex {
 	}
 	return neighbors.Items()
 }
+
+func (g Graph) IsClique(vertices []Vertex) bool {
+	vertexSet := SetFrom(vertices)
+	for _, vertex := range vertices {
+		adjacent := SetFrom(g.Neighbors(vertex))
+		adjacent.Add(vertex)
+		if !vertexSet.Difference(adjacent).IsEmpty() {
+			return false
+		}
+	}
+	return true
+}
+
+func (g Graph) IsIndependentSet(vertices []Vertex) bool {
+	vertexSet := SetFrom(vertices)
+	for _, vertex := range vertices {
+		adjacent := SetFrom(g.Neighbors(vertex))
+		if vertexSet.Intersection(adjacent).Len() != 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func (g Graph) ActiveNeighbors(vertex Vertex, activeEdges EdgeSet) []Vertex {
+	neighbors := NewSet[Vertex]()
+	for _, edge := range g.EdgesOf[vertex] {
+		if activeEdges != nil && !activeEdges.Contains(edge) {
+			continue
+		}
+		for _, vertex := range edge {
+			neighbors.Add(vertex)
+		}
+	}
+	neighbors.Delete(vertex)
+	return neighbors.Items()
+}
+
+func (g Graph) BFSTraversal(start Vertex, activeEdges EdgeSet) []Vertex {
+	q := NewQueue[Vertex]()
+	q.Enqueue(start)
+	visited := NewSet[Vertex]()
+	for !q.IsEmpty() {
+		current := q.Dequeue()
+		if visited.Contains(current) {
+			continue
+		}
+		visited.Add(current)
+		for _, neighbor := range g.ActiveNeighbors(current, activeEdges) {
+			if visited.Contains(neighbor) {
+				continue
+			}
+			q.Enqueue(neighbor)
+		}
+	}
+	return visited.Items()
+}
