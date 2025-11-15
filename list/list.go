@@ -60,3 +60,13 @@ func Divide(numItems, numParts int) [][2]int {
 	ranges[i] = [2]int{start, numItems}
 	return ranges
 }
+
+func CountValue[T comparable](items []T, value T) int {
+	count := 0
+	for _, item := range items {
+		if item == value {
+			count += 1
+		}
+	}
+	return count
+}
