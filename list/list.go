@@ -4,7 +4,7 @@ package list
 import (
 	"math/rand/v2"
 
-	"github.com/jqkard/fn/lang"
+	"github.com/jqkard/fn/number"
 )
 
 func IntRange(start, end int) []int {
@@ -15,7 +15,7 @@ func IntRange(start, end int) []int {
 	return numbers
 }
 
-func Sum[T lang.Number](items []T) T {
+func Sum[T number.Number](items []T) T {
 	var total T = 0
 	for _, item := range items {
 		total += item
@@ -23,7 +23,7 @@ func Sum[T lang.Number](items []T) T {
 	return total
 }
 
-func Product[T lang.Number](items []T) T {
+func Product[T number.Number](items []T) T {
 	var product T = 1
 	for _, item := range items {
 		product *= item

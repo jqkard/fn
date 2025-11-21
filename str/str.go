@@ -3,6 +3,7 @@ package str
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"golang.org/x/text/language"
@@ -61,4 +62,20 @@ func WrapBrackets[T any](items []T) string {
 
 func WrapParens[T any](items []T) string {
 	return "( " + strings.Join(List(items), ", ") + " )"
+}
+
+func ParseInt(value string) int {
+	number, err := strconv.Atoi(strings.TrimSpace(value))
+	if err != nil {
+		return 0
+	}
+	return number
+}
+
+func ParseFloat(value string) float64 {
+	number, err := strconv.ParseFloat(strings.TrimSpace(value), 64)
+	if err != nil {
+		return 0
+	}
+	return number
 }
