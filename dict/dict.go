@@ -1,3 +1,4 @@
+// The dict package contains useful map functions
 package dict
 
 import (
@@ -5,12 +6,25 @@ import (
 	"slices"
 )
 
+type Entry[K comparable, V any] struct {
+	Key   K
+	Value V
+}
+
 func Keys[K comparable, V any](items map[K]V) []K {
 	return slices.Collect(maps.Keys(items))
 }
 
 func Values[K comparable, V any](items map[K]V) []V {
 	return slices.Collect(maps.Values(items))
+}
+
+func Entries[K comparable, V any](items map[K]V) []Entry[K, V] {
+	entries := make([]Entry[K, V], 0, len(items))
+	for k, v := range items {
+		entries = append(entries, Entry[K, V]{k, v})
+	}
+	return entries
 }
 
 func HasKey[K comparable, V any](items map[K]V, key K) bool {
@@ -22,9 +36,9 @@ func NoKey[K comparable, V any](items map[K]V, key K) bool {
 	return !HasKey(items, key)
 }
 
-func SetDefault[K comparable, V any](items map[K]V, key K, value V) {
+func SetDefault[K comparable, V any](items map[K]V, key K, defaultValue V) {
 	if _, ok := items[key]; !ok {
-		items[key] = value
+		items[key] = defaultValue
 	}
 }
 
@@ -36,17 +50,17 @@ func GetOr[K comparable, V any](items map[K]V, key K, defaultValue V) V {
 }
 
 func TallyValues[K, V comparable](items map[K]V, values []V) map[V]int {
-	tally := make(map[V]int, len(values))
+	count := make(map[V]int, len(values))
 	for _, value := range values {
-		tally[value] = 0
+		count[value] = 0
 	}
 	for _, value := range items {
-		if NoKey(tally, value) {
+		if NoKey(count, value) {
 			continue
 		}
-		tally[value] += 1
+		count[value] += 1
 	}
-	return tally
+	return count
 }
 
 func Zip[K comparable, V any](keys []K, values []V) map[K]V {

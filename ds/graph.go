@@ -3,8 +3,6 @@ package ds
 import (
 	"fmt"
 	"strings"
-
-	"github.com/jqkard/fn/dict"
 )
 
 type (
@@ -13,8 +11,6 @@ type (
 	VertexSet = *Set[Vertex]
 	EdgeSet   = *Set[Edge]
 )
-
-const edgeGlue string = "-"
 
 type Graph struct {
 	Vertices    []Vertex
@@ -25,12 +21,12 @@ type Graph struct {
 }
 
 func NewEdge(edge string) Edge {
-	parts := strings.Split(edge, edgeGlue)
+	parts := strings.Split(edge, "-")
 	return Edge{parts[0], parts[1]}
 }
 
 func (e Edge) String() string {
-	return fmt.Sprintf("%s%s%s", e[0], edgeGlue, e[1])
+	return fmt.Sprintf("%s-%s", e[0], e[1])
 }
 
 func (e Edge) Tuple() (Vertex, Vertex) {
@@ -53,8 +49,12 @@ func NewGraph(vertices string, edgePairs string) *Graph {
 		g.Edges = append(g.Edges, edge)
 		g.EdgesOf[v1] = append(g.EdgesOf[v1], edge)
 		g.EdgesOf[v2] = append(g.EdgesOf[v2], edge)
-		dict.SetDefault(g.NeighborsOf, v1, NewSet[Vertex]())
-		dict.SetDefault(g.NeighborsOf, v2, NewSet[Vertex]())
+		if _, ok := g.NeighborsOf[v1]; !ok {
+			g.NeighborsOf[v1] = NewSet[Vertex]()
+		}
+		if _, ok := g.NeighborsOf[v2]; !ok {
+			g.NeighborsOf[v2] = NewSet[Vertex]()
+		}
 		g.NeighborsOf[v1].Add(v2)
 		g.NeighborsOf[v2].Add(v1)
 	}
@@ -66,6 +66,19 @@ func (g Graph) Neighbors(vertex Vertex) []Vertex {
 	if !ok {
 		return []Vertex{}
 	}
+	return neighbors.Items()
+}
+
+func (g Graph) ActiveNeighbors(vertex Vertex, activeEdges EdgeSet) []Vertex {
+	neighbors := NewSet[Vertex]()
+	for _, edge := range g.EdgesOf[vertex] {
+		if activeEdges != nil && !activeEdges.Contains(edge) {
+			continue
+		}
+		neighbors.Add(edge[0])
+		neighbors.Add(edge[1])
+	}
+	neighbors.Delete(vertex)
 	return neighbors.Items()
 }
 
@@ -92,22 +105,8 @@ func (g Graph) IsIndependentSet(vertices []Vertex) bool {
 	return true
 }
 
-func (g Graph) ActiveNeighbors(vertex Vertex, activeEdges EdgeSet) []Vertex {
-	neighbors := NewSet[Vertex]()
-	for _, edge := range g.EdgesOf[vertex] {
-		if activeEdges != nil && !activeEdges.Contains(edge) {
-			continue
-		}
-		for _, vertex := range edge {
-			neighbors.Add(vertex)
-		}
-	}
-	neighbors.Delete(vertex)
-	return neighbors.Items()
-}
-
 func (g Graph) BFSTraversal(start Vertex, activeEdges EdgeSet) []Vertex {
-	q := NewQueue[Vertex]()
+	q := NewQueue[Vertex](0)
 	q.Enqueue(start)
 	visited := NewSet[Vertex]()
 	for !q.IsEmpty() {

@@ -1,15 +1,15 @@
+// The comb package provides itertools functions
 package comb
 
 import (
 	"iter"
 
-	"github.com/jqkard/fn"
 	"github.com/jqkard/fn/list"
 )
 
 func Product[T any](domains ...[]T) iter.Seq2[int, []T] {
 	return func(yield func(int, []T) bool) {
-		sizes := fn.Map(domains, list.Length)
+		sizes := list.Map(domains, list.Length)
 		total := list.Product(sizes)
 		for i := range total {
 			tuple := getDomainCombo(domains, sizes, i)
@@ -22,7 +22,7 @@ func Product[T any](domains ...[]T) iter.Seq2[int, []T] {
 
 func ProductRange[T any](start, end int, domains ...[]T) iter.Seq2[int, []T] {
 	return func(yield func(int, []T) bool) {
-		sizes := fn.Map(domains, list.Length)
+		sizes := list.Map(domains, list.Length)
 		for i := start; i < end; i++ {
 			tuple := getDomainCombo(domains, sizes, i)
 			if !yield(i, tuple) {

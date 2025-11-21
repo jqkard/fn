@@ -1,10 +1,6 @@
 package ds
 
-import (
-	"strings"
-
-	"github.com/jqkard/fn/dict"
-)
+import "strings"
 
 type Set[T comparable] struct {
 	items map[T]bool
@@ -47,7 +43,11 @@ func (s Set[T]) IsEmpty() bool {
 }
 
 func (s Set[T]) Items() []T {
-	return dict.Keys(s.items)
+	items := make([]T, 0, len(s.items))
+	for item := range s.items {
+		items = append(items, item)
+	}
+	return items
 }
 
 func (s1 Set[T]) Union(s2 *Set[T]) *Set[T] {
@@ -97,7 +97,7 @@ func NewSubsets(universal string, subsetLines []string) *Subsets {
 		subsets[i] = strings.Fields(strings.TrimSpace(parts[1]))
 	}
 	return &Subsets{
-		Universal: strings.Fields(universal),
+		Universal: strings.Fields(strings.TrimSpace(universal)),
 		Names:     names,
 		Subsets:   subsets,
 	}

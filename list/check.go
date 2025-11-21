@@ -1,6 +1,4 @@
-package check
-
-import "github.com/jqkard/fn/ds"
+package list
 
 func All[T any](items []T, ok func(T) bool) bool {
 	for _, item := range items {
@@ -29,6 +27,15 @@ func AllIndex[T any](items []T, ok func(int, T) bool) bool {
 	return true
 }
 
+func AnyIndex[T any](items []T, ok func(int, T) bool) bool {
+	for i, item := range items {
+		if ok(i, item) {
+			return true
+		}
+	}
+	return false
+}
+
 func AllEqual[T comparable](items []T, value T) bool {
 	for _, item := range items {
 		if item != value {
@@ -47,14 +54,6 @@ func AnyEqual[T comparable](items []T, value T) bool {
 	return false
 }
 
-func AllUnique[T comparable](items []T) bool {
-	return len(items) == ds.SetFrom(items).Len()
-}
-
-func AllSame[T comparable](items []T) bool {
-	return ds.SetFrom(items).Len() == 1
-}
-
 func AllTrue(items []bool) bool {
 	return AllEqual(items, true)
 }
@@ -69,4 +68,12 @@ func AnyTrue(items []bool) bool {
 
 func AnyFalse(items []bool) bool {
 	return AnyEqual(items, false)
+}
+
+func AllSame[T comparable](items []T) bool {
+	return len(TallyItems(items)) == 1
+}
+
+func AllUnique[T comparable](items []T) bool {
+	return len(TallyItems(items)) == len(items)
 }

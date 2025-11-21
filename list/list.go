@@ -1,9 +1,10 @@
+// The list package contains useful list functions
 package list
 
 import (
-	"math/rand"
+	"math/rand/v2"
 
-	"github.com/jqkard/fn"
+	"github.com/jqkard/fn/lang"
 )
 
 func IntRange(start, end int) []int {
@@ -14,7 +15,7 @@ func IntRange(start, end int) []int {
 	return numbers
 }
 
-func Sum[T fn.Number](items []T) T {
+func Sum[T lang.Number](items []T) T {
 	var total T = 0
 	for _, item := range items {
 		total += item
@@ -22,7 +23,7 @@ func Sum[T fn.Number](items []T) T {
 	return total
 }
 
-func Product[T fn.Number](items []T) T {
+func Product[T lang.Number](items []T) T {
 	var product T = 1
 	for _, item := range items {
 		product *= item
@@ -61,7 +62,15 @@ func Divide(numItems, numParts int) [][2]int {
 	return ranges
 }
 
-func CountValue[T comparable](items []T, value T) int {
+func TallyItems[T comparable](items []T) map[T]int {
+	count := make(map[T]int)
+	for _, item := range items {
+		count[item] += 1
+	}
+	return count
+}
+
+func Count[T comparable](items []T, value T) int {
 	count := 0
 	for _, item := range items {
 		if item == value {

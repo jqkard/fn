@@ -1,3 +1,4 @@
+// The ds package contains useful data structures
 package ds
 
 type Coords [2]int

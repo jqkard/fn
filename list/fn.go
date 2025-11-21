@@ -1,16 +1,4 @@
-package fn
-
-type Number interface {
-	~int | ~uint | ~float32 | ~float64
-}
-
-func Ternary[T any](condition bool, trueValue, falseValue T) T {
-	if condition {
-		return trueValue
-	} else {
-		return falseValue
-	}
-}
+package list
 
 func Map[T any, V any](items []T, convert func(T) V) []V {
 	results := make([]V, len(items))

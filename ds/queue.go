@@ -4,12 +4,12 @@ type Queue[T any] struct {
 	items []T
 }
 
-func NewQueue[T any]() *Queue[T] {
-	return &Queue[T]{items: make([]T, 0)}
+func NewQueue[T any](capacity int) *Queue[T] {
+	return &Queue[T]{items: make([]T, capacity)}
 }
 
 func QueueFrom[T any](items []T) *Queue[T] {
-	q := NewQueue[T]()
+	q := NewQueue[T](0)
 	q.items = items
 	return q
 }

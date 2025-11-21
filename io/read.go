@@ -1,10 +1,10 @@
+// The io package contains functions related to reading files
 package io
 
 import (
 	"encoding/json"
 	"os"
-
-	"github.com/jqkard/fn/str"
+	"strings"
 )
 
 func ReadFile(path string) (string, error) {
@@ -20,7 +20,7 @@ func ReadLines(path string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	lines := str.Lines(text)
+	lines := strings.Split(text, "\n")
 	return lines, nil
 }
 
